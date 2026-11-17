@@ -97,12 +97,33 @@ const homeButton = document.querySelector("#home-button");
 const resultName = document.querySelector("#result-name");
 const resultEmail = document.querySelector("#result-email");
 const resultScore = document.querySelector("#result-score");
+const nameNote = document.querySelector("#name-note");
+const emailNote = document.querySelector("#email-note");
 
 let currentQuestion = 0;
 let score = 0;
 let selectedAnswer = null;
 let secondsRemaining = 30;
 let timerId = null;
+
+function showMissingFieldNoteWhenInvalid(input, note) {
+    let attempted = false;
+
+    input.addEventListener("invalid", () => {
+        attempted = true;
+        note.hidden = Boolean(input.value.trim());
+    });
+
+    input.addEventListener("input", () => {
+        note.hidden = !attempted || Boolean(input.value.trim());
+    });
+}
+
+nameInput.addEventListener("input", () => {
+    nameInput.setCustomValidity(nameInput.value.trim() ? "" : "Veuillez renseigner votre nom.");
+});
+showMissingFieldNoteWhenInvalid(nameInput, nameNote);
+showMissingFieldNoteWhenInvalid(emailInput, emailNote);
 
 function stopTimer() {
     window.clearInterval(timerId);
